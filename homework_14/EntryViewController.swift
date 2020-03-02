@@ -9,7 +9,7 @@
 import UIKit
 
 protocol  EntryViewControllerDelegate: AnyObject {
-    func saveData(firstNameText: String, lastNameText: String)
+    func saveData(_ user: User)
 }
 
 class EntryViewController: UIViewController {
@@ -17,53 +17,55 @@ class EntryViewController: UIViewController {
     @IBOutlet weak var firstNameField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
     @IBOutlet weak var sexEntry: UISegmentedControl!
-    @IBOutlet weak var saveButton: UIButton!
-    @IBOutlet weak var closeButton: UIButton!
-    
-//    let userSex: [Sex] = [.male, .female]
     
     weak var delegate: EntryViewControllerDelegate?
-    
-    
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        updateSaveButton()      // <- это будет проверка на пустые поля в форме заполнения
     }
     
-    @IBAction func nameDidChange(_ sender: UITextField) {
-//        updateSaveButton()
+    @IBAction func closeButtonDidClick(_ sender: Any) {
+           self.dismiss(animated: true, completion: nil)
     }
-    
-    @IBAction func sexDidChange(_ sender: Any) {
-//        updateSaveButton()
-    }
-    
     
     @IBAction func saveButtonDidClick(_ sender: Any) {
-        let user = createUser()
-        let resultViewController = ResultViewController.createResultViewController(user: user)
-        self.present(resultViewController, animated: true, completion: nil)
-    }
-    
-    func createUser() -> User {
         let firstName = firstNameField.text!
         let lastName = lastNameField.text!
-//        let sex: Sex = userSex[sexEntry.selectedSegmentIndex]
         
-        let user = User(firstName: firstName, lastName: lastName)
-        return user
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+        guard firstName != "" && lastName != "" else {
+            showErrorAlert()
+            return
+        }
+
+        let sex: Sex
+        switch sexEntry.selectedSegmentIndex {
+        case 0:
+            sex = .male
+        case 1:
+            sex = .female
+        default:
+            fatalError()
+        }
         
-        delegate?.saveData(firstNameText: firstNameField.text!, lastNameText: lastNameField.text!)  // <- как делегировать свойства юзера в финальное окно??
+        let user = User(firstName: firstName, lastName: lastName, sex: sex)
+        
+        delegate?.saveData(user)
+        
+        dismiss(animated: true, completion: nil)
     }
-   
-    @IBAction func closeButtonDidClick(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+
+
+
+}
+
+private extension EntryViewController {
+
+    func showErrorAlert() {
+        let alert = UIAlertController(title: "Can not save user data", message: "One of the fields is empty", preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
-    
 
 }

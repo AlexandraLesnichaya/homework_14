@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aLV-Vj-teb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
@@ -91,30 +91,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="9TH-eG-edh">
-                                <rect key="frame" x="16" y="167" width="343" height="32"/>
+                                <rect key="frame" x="16" y="168" width="343" height="32"/>
                                 <segments>
                                     <segment title="Male"/>
                                     <segment title="Female"/>
                                 </segments>
-                                <connections>
-                                    <action selector="sexDidChande:" destination="aLV-Vj-teb" eventType="valueChanged" id="sGC-lF-5ug"/>
-                                </connections>
                             </segmentedControl>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter first name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kSv-q5-ujx" userLabel="First Name Entry">
                                 <rect key="frame" x="16" y="60" width="343" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="nameDidChange:" destination="aLV-Vj-teb" eventType="editingDidEnd" id="x6x-Oj-nTO"/>
-                                </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter last name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fnc-Lf-Qob" userLabel="Last Name Entry">
                                 <rect key="frame" x="16" y="114" width="343" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="nameDidChange:" destination="aLV-Vj-teb" eventType="editingDidEnd" id="rJA-68-tsv"/>
-                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uuJ-eG-lyR">
                                 <rect key="frame" x="16" y="15" width="39" height="30"/>
@@ -151,10 +142,8 @@
                         <viewLayoutGuide key="safeArea" id="85D-d7-A0v"/>
                     </view>
                     <connections>
-                        <outlet property="closeButton" destination="uuJ-eG-lyR" id="GjO-6c-juF"/>
                         <outlet property="firstNameField" destination="kSv-q5-ujx" id="iAA-Gu-rIi"/>
                         <outlet property="lastNameField" destination="Fnc-Lf-Qob" id="3oq-gT-pUD"/>
-                        <outlet property="saveButton" destination="hpd-R3-hWT" id="r0d-jC-4br"/>
                         <outlet property="sexEntry" destination="9TH-eG-edh" id="UY5-NW-HWd"/>
                     </connections>
                 </viewController>

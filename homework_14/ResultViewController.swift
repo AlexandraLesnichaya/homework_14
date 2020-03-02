@@ -8,52 +8,92 @@
 
 import UIKit
 
-class ResultViewController: UIViewController, EntryViewControllerDelegate {
+class ResultViewController: UIViewController {
         
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var firstNameLabel: UILabel!
     @IBOutlet weak var lastNameLabel: UILabel!
     
-    var user: User?
-    
-    static func createResultViewController(user: User) -> ResultViewController {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let resultViewController = storyboard.instantiateViewController(withIdentifier: "ResultViewController") as! ResultViewController
-        resultViewController.user = user
-        return resultViewController
-       }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        image.image = UIImage(named: "empty")
-        
-        let firstNameText = UserDefaults.standard.value(forKey: "firstname") as? String
-        if let firstNameText = firstNameText {
-            firstNameLabel.text = firstNameText
-        }
-        
-        let lastNameText = UserDefaults.standard.value(forKey: "lastname") as? String
-        if let lastNameText = lastNameText {
-            lastNameLabel.text = lastNameText
+
+        let user = loadUserToUserDefaults()
+        if let user = user {
+            updateUI(withUser: user)
+        } else {
+            image.image = UIImage(named: "empty")
+            firstNameLabel.text = ""
+            lastNameLabel.text = ""
         }
     }
     
-    func saveData(firstNameText: String, lastNameText: String) {
-        firstNameLabel.text = firstNameText
-        lastNameLabel.text = lastNameText
-        UserDefaults.standard.set(firstNameText, forKey: "firstname")
-        UserDefaults.standard.set(lastNameText, forKey: "lastname")
+    @IBAction func changeButtonDidClick(_ sender: Any) {
+        let entryViewController = EntryViewController.createFromMainStoryboard()
+        if let entryViewController = entryViewController {
+            entryViewController.delegate = self
+            present(entryViewController, animated: true, completion: nil)
+       }
+    }
+     
+
+
+}
+
+extension UIViewController {
+
+    static func createFromStoryboard(withName name: String) -> Self? {
+        let storyboard = UIStoryboard(name: name, bundle: Bundle.main)
+        let identifierOfSelfClass = String(describing: self)
+        let viewController = storyboard.instantiateViewController(identifier: identifierOfSelfClass) as? Self
+        return viewController
     }
 
-//    @IBAction func changeButtonDidClick(_ sender: Any) -> EntryViewController {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        if let entryViewController = storyboard.instantiateViewController(identifier: "EntryViewController") as? EntryViewController {
-//            return entryViewController
-//        } else {
-//            fatalError("Can not load EntryViewController")
-//        }
-//    }
-    
+    static func createFromMainStoryboard() -> Self? {
+        return createFromStoryboard(withName: "Main")
+    }
+}
 
+extension ResultViewController: EntryViewControllerDelegate {
+
+    func saveData(_ user: User) {
+        updateUI(withUser: user)
+        saveUserToUserDefaults(user)
+    }
+}
+
+private extension ResultViewController {
+
+    func updateUI(withUser user: User) {
+        firstNameLabel.text = user.firstName
+        lastNameLabel.text = user.lastName
+
+        let logoImage: UIImage
+        switch user.sex {
+        case .male:
+            logoImage = UIImage(named: "male")!
+        case .female:
+            logoImage = UIImage(named: "female")!
+        }
+        image.image = logoImage
+    }
+
+    func saveUserToUserDefaults(_ user: User) {
+        UserDefaults.standard.set(user.firstName, forKey: "firstname")
+        UserDefaults.standard.set(user.lastName, forKey: "lastame")
+        UserDefaults.standard.set(user.sex.rawValue, forKey: "sex")
+    }
+
+    func loadUserToUserDefaults() -> User? {
+        if let firstName = UserDefaults.standard.value(forKey: "firstname") as? String,
+            let lastName = UserDefaults.standard.value(forKey: "lastname") as? String,
+            let stringSex = UserDefaults.standard.value(forKey: "sex") as? String,
+            let sex = Sex(rawValue: stringSex) {
+
+            let user = User(firstName: firstName, lastName: lastName, sex: sex)
+
+            return user
+        }
+        return nil
+    }
 }
 

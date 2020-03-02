@@ -11,20 +11,10 @@ import Foundation
 struct User {
     var firstName: String
     var lastName: String
-//    var sex: Sex
+    var sex: Sex
+}
 
-
-
-//enum Sex {
-//    case male
-//    case female
-    
-//    func showImage() -> {
-//        switch self {
-//        case .male:
-//            return
-//        case .female:
-//            return
-//        }
-//    }
+enum Sex: String {
+    case male
+    case female
 }
